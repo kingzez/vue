@@ -18,6 +18,7 @@ import {
   defineReactive
 } from '../util/index'
 
+// 定义 Vue 的静态方法（不同于定义 Vue 的原型方法）
 export function initGlobalAPI (Vue: GlobalAPI) {
   // config
   const configDef = {}
@@ -34,6 +35,7 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   // exposed util methods.
   // NOTE: these are not considered part of the public API - avoid relying on
   // them unless you are aware of the risk.
+  // 最好不要使用
   Vue.util = {
     warn,
     extend,
@@ -62,6 +64,7 @@ export function initGlobalAPI (Vue: GlobalAPI) {
 
   extend(Vue.options.components, builtInComponents)
 
+  {/* 定义全局的方法 */}
   initUse(Vue)
   initMixin(Vue)
   initExtend(Vue)

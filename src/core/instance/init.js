@@ -49,13 +49,19 @@ export function initMixin (Vue: Class<Component>) {
     }
     // expose real self
     vm._self = vm
+    // 初始化生命周期
     initLifecycle(vm)
+    // 初始化事件中心
     initEvents(vm)
+    // 初始化渲染
     initRender(vm)
+    // 调用 beforeCreate 生命周期
     callHook(vm, 'beforeCreate')
     initInjections(vm) // resolve injections before data/props
+    // 初始化 props, data, methods, computed, watch
     initState(vm)
     initProvide(vm) // resolve provide after data/props
+    // 调用 created 生命周期
     callHook(vm, 'created')
 
     /* istanbul ignore if */
@@ -66,6 +72,7 @@ export function initMixin (Vue: Class<Component>) {
     }
 
     if (vm.$options.el) {
+      // 挂载 dom
       vm.$mount(vm.$options.el)
     }
   }

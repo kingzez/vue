@@ -35,6 +35,7 @@ const sharedPropertyDefinition = {
   set: noop
 }
 
+// 把 data, props, method 代理到 vm 上
 export function proxy (target: Object, sourceKey: string, key: string) {
   sharedPropertyDefinition.get = function proxyGetter () {
     return this[sourceKey][key]
@@ -51,6 +52,7 @@ export function initState (vm: Component) {
   if (opts.props) initProps(vm, opts.props)
   if (opts.methods) initMethods(vm, opts.methods)
   if (opts.data) {
+    // 初始化 data
     initData(vm)
   } else {
     observe(vm._data = {}, true /* asRootData */)
@@ -109,6 +111,7 @@ function initProps (vm: Component, propsOptions: Object) {
   toggleObserving(true)
 }
 
+// 初始化 data
 function initData (vm: Component) {
   let data = vm.$options.data
   data = vm._data = typeof data === 'function'
@@ -147,6 +150,7 @@ function initData (vm: Component) {
       proxy(vm, `_data`, key)
     }
   }
+  // 响应式数据处理
   // observe data
   observe(data, true /* asRootData */)
 }
