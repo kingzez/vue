@@ -14,6 +14,8 @@ const idToTemplate = cached(id => {
   return el && el.innerHTML
 })
 
+// 挂载页面
+// 缓存 Vue 原型链上的 $mount,( ./runtime/index.js line 37)
 const mount = Vue.prototype.$mount
 Vue.prototype.$mount = function (
   el?: string | Element,
@@ -21,6 +23,7 @@ Vue.prototype.$mount = function (
 ): Component {
   el = el && query(el)
 
+  // 挂载的根节点 不允许挂载在 html body 上
   /* istanbul ignore if */
   if (el === document.body || el === document.documentElement) {
     process.env.NODE_ENV !== 'production' && warn(
@@ -31,8 +34,10 @@ Vue.prototype.$mount = function (
 
   const options = this.$options
   // resolve template/el and convert to render function
+  // entry-runtime-with-compile 模式下
   if (!options.render) {
     let template = options.template
+    // 判断是否传入 template，如果传入 template
     if (template) {
       if (typeof template === 'string') {
         if (template.charAt(0) === '#') {
@@ -45,6 +50,7 @@ Vue.prototype.$mount = function (
             )
           }
         }
+        // 如果 template 是 DOM 对象
       } else if (template.nodeType) {
         template = template.innerHTML
       } else {
@@ -53,10 +59,12 @@ Vue.prototype.$mount = function (
         }
         return this
       }
+      // 如果没有传入 template
     } else if (el) {
       template = getOuterHTML(el)
     }
     if (template) {
+      // 编译相关，把 template 转换成 render 函数
       /* istanbul ignore if */
       if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
         mark('compile')
