@@ -58,6 +58,7 @@ export function initLifecycle (vm: Component) {
 export function lifecycleMixin (Vue: Class<Component>) {
   // 将 VNode 渲染成真实的 DOM
   // 调用时机：1 首次渲染 2 数据改变后渲染
+  // _update 核心就是调用 vm.__patch__ 方法
   Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
     const vm: Component = this
     const prevEl = vm.$el
